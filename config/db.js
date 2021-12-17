@@ -6,7 +6,7 @@ const connectDB = async ()=>{
             useNewUrlParser:true,
            useUnifiedTopology:true
         }
-        console.log(`Base de datos conectada:${process.env.MONGODB_URI.title}`)
+        console.log(`Base de datos conectada`)
     } catch (error) {
         console.log(error)
        process.exit(1)
