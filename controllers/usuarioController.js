@@ -1,13 +1,15 @@
 const bcryptjs = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const Usuario = require('./../models/Usuarios')
+const UserPerfil = require('./../models/UserPerfil')
 
 exports.createUser= async(req, res) =>{
     //obtenemos datos form
     const {
         nombre,
         email,
-        password
+        password,
+        perfil
     } = req.body
     //comprobamos que usuario se genera en DB
     //usamos bcrypjs para codificar contraseña
@@ -31,7 +33,8 @@ exports.createUser= async(req, res) =>{
             const newUser = await Usuario.create({
                 nombre,
                 email,
-                password:hashedPassword
+                password:hashedPassword,
+                perfil
             })
             const payload = {
                 user:{
@@ -144,3 +147,155 @@ exports.verifyToken = async(req, res) =>{
 
 }
 
+//FUNCIONES PARA GENERAR USUARIOS
+exports.createProfile = async (req, res) =>{
+    //const idUser = req.session.currentUser._id 
+
+        const {nombre, foto, nickName, edad, descripcion, email, socialMedia1,
+            socialMedia2, socialMedia3, idUsuario
+             } = req.body
+
+    //  UserPerfil.create({
+    //             nombre,
+    //             foto,
+    //             nickName,
+    //             edad,
+    //             descripcion,
+    //             email,
+    //             socialMedia1,
+    //             socialMedia2,
+    //             socialMedia3,
+    //             propietario,
+    //             idUsuario
+    //          })
+    //     .then(dbPerfil =>{
+    //        return Usuario.findByIdAndUpdate(propietario, {$push:{perfil:dbPerfil._id}}) 
+             
+    //     })
+    //     .then(()=>res.redirect('/'))
+    //     .catch(err => {
+    //         console.log(`Hubo un error creando el post en la base de datos: ${err}`);
+    //         next(err);
+    //       });
+
+
+        try {
+            const newProfile = await UserPerfil.create({
+                nombre,
+                foto,
+                nickName,
+                edad,
+                descripcion,
+                email,
+                socialMedia1,
+                socialMedia2,
+                socialMedia3,
+                idUsuario
+             })
+          
+               
+             res.json({
+                msg:"Perfil generado exitósamente",
+                data:newProfile
+            })
+  
+        } catch (error) {
+            res.status(500).json({
+                msg:"Hubo un error generando el perfil",
+                error:error
+            })
+            console.log(error)
+        }
+
+}
+
+exports.getAllProfiles = async(req, res)=>{
+    try {
+        const userProfile = await UserPerfil.find({})
+        res.json({
+            msg:"obteniendo todos los perfiles",
+            data:userProfile
+        })
+    } catch (error) {
+        res.status(500).json({
+            msg:"Hubo un error consiguiendo los perfiles",
+            error:error
+        })
+    }
+}
+//VER UN PERFIL
+exports.getOneProfile = async(req, res) =>{
+    const {id} = req.params
+    
+    try {
+        const oneProfile = await UserPerfil.findById(id)
+        res.json({
+            msg:"Perfil encontrado",
+            data:oneProfile
+        })
+    } catch (error) {
+        res.status(500).json({
+            msg:"El perfil no fue encontrado",
+            error:error
+        })
+    }
+
+}
+
+//EDITAR MI PERFIL
+exports.editMyProfile = async(req, res) =>{
+    const {id} = req.params
+    const{
+        nombre,
+        foto,
+        nickName,
+        edad,
+        descripcion,
+        socialMedia1,
+        socialMedia2,
+        socialMedia3,
+        email
+    } = req.body
+    try {
+        const updateProfile = await UserPerfil.findByIdAndUpdate(
+        id,
+        {
+            nombre,
+            foto,
+            nickName,
+            edad,
+            descripcion,
+            socialMedia1,
+            socialMedia2,
+            socialMedia3,
+            email
+           },{new:true})
+           res.json({
+               msg:"Perfil actualizado",
+               data:updateProfile
+           })
+    } catch (error) {
+        res.status(500).json({
+            msg:"Hubo un error actualizando el perfil",
+            error:error
+        })
+    }
+}
+
+//ELIMINAR PERFIL
+exports.deleteProfile = async(req, res)=>{
+    const {id}=req.params
+    try {
+        const deletedProfile = await UserPerfil.findByIdAndRemove({_id:id})
+        res.json({
+            msg:"Perfil eliminado exitosamente",
+            data:deletedProfile
+        })
+    } catch (error) {
+        res.status(500).json({
+            msg:"El perfil es inmortal!",
+            error:error
+        })
+    }
+
+}

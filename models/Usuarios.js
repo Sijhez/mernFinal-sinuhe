@@ -3,7 +3,8 @@ const mongoose = require("mongoose")
 
 //schema
 const usuarioSchema = mongoose.Schema({
-    nombre:{
+    
+     nombre:{
         type:String,
         required:true
     },
@@ -17,6 +18,9 @@ const usuarioSchema = mongoose.Schema({
         type:String,
         required:true
     }
+    },
+{
+    timestamps:true
 })
 
 //model
