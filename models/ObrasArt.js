@@ -1,6 +1,7 @@
 //imports mongoose
 const mongoose = require("mongoose")
 
+
 //schema
 const obraArtSchema = mongoose.Schema({
     titulo:{
@@ -23,6 +24,12 @@ const obraArtSchema = mongoose.Schema({
     precio:{
         type:Number,
         required:true  
+    },
+    autor:{
+        type:String
+    },
+    idAutor:{
+        type:String
     }
 })
 

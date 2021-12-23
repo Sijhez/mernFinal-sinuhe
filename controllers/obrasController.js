@@ -1,6 +1,7 @@
 //import model
 const ObrasArt = require("./../models/ObrasArt")
 
+
 //creacion de articulo de arte (CREATE)
 exports.createArt = async(req, res) =>{
     const {
@@ -9,14 +10,18 @@ exports.createArt = async(req, res) =>{
         imagen1,
         imagen2,
         imagen3,
-        precio
+        precio,
+        autor,
+        idAutor
+        
     } = req.body
 
     //crear articulo en base de datos
     try {
         const newArt = await ObrasArt.create({
-            titulo, descripcion, imagen1, imagen2, imagen3, precio
+            titulo, descripcion, imagen1, imagen2, imagen3, precio,autor,idAutor
         })
+        
         res.json({
             msg:"Articulo creado exitósamente",
             data:newArt
@@ -82,13 +87,15 @@ exports.editArticle = async (req, res)=>{
     imagen1,
     imagen2,
     imagen3,
-    precio
+    precio,
+    autor,
+    idAutor
    } = req.body
    
    try {
        const updatedArticle = await ObrasArt.findByIdAndUpdate(
            id,{
-               titulo,descripcion,imagen1,imagen2,imagen3,precio
+               titulo,descripcion,imagen1,imagen2,imagen3,precio,autor,idAutor
            },{new:true})
            res.json({
                msg:"El articulo ha sido actualizado",

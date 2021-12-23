@@ -21,6 +21,8 @@ app.use('/usuarios', require('./routes/usuarios'))
 
 app.use('/articulos', require('./routes/obrasArt'))
 
+app.use('/perfiles', require('./routes/perfilUser'))
+
 app.listen(process.env.PORT, ()=>{
     console.log(`Servidor conectado en ${process.env.PORT}`)
 })
