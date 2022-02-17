@@ -1,5 +1,6 @@
 //import model
 const ObrasArt = require("./../models/ObrasArt")
+const Usuarios = require("./../models/Usuarios")
 
 
 //creacion de articulo de arte (CREATE)
@@ -11,16 +12,26 @@ exports.createArt = async(req, res) =>{
         imagen2,
         imagen3,
         precio,
-        autor,
-        idAutor
+        autor
         
     } = req.body
+
+   
 
     //crear articulo en base de datos
     try {
         const newArt = await ObrasArt.create({
-            titulo, descripcion, imagen1, imagen2, imagen3, precio,autor,idAutor
+            titulo, descripcion, imagen1, imagen2, imagen3, precio, autor
         })
+
+        const updateUsuario = await Usuarios.findByIdAndUpdate(
+            autor,{ 
+                $push:{myArticles:newArt }
+            },{
+                new:true
+            }
+        )
+        console.log(updateUsuario)
         
         res.json({
             msg:"Articulo creado exitósamente",
@@ -41,11 +52,12 @@ exports.createArt = async(req, res) =>{
 exports.readAllArt = async(req, res) => {
     
     try {
-        const articles = await ObrasArt.find({})
+        const articles = await ObrasArt.find({}).populate('autor')
         res.json({
             msg:"Articulos conseguidos con éxito",
             data:articles
         })
+        console.log(articles)
     } catch (error) {
         res.status(500).json({
             msg:"Hubo un error consiguiendo los datos",
@@ -60,7 +72,7 @@ exports.readAllArt = async(req, res) => {
     const {id}=req.params
 
     try {
-        const oneArticle = await ObrasArt.findById(id)
+        const oneArticle = await ObrasArt.findById(id).populate('autor')
         res.json({
             msg:"Artículo encontrado",
             data: oneArticle

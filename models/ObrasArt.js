@@ -25,12 +25,7 @@ const obraArtSchema = mongoose.Schema({
         type:Number,
         required:true  
     },
-    autor:{
-        type:String
-    },
-    idAutor:{
-        type:String
-    }
+    autor:{type:mongoose.Schema.Types.ObjectId, ref:'Usuario'}
 })
 
 //modelo

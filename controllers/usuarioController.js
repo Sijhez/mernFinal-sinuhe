@@ -125,7 +125,7 @@ exports.loginUser = async(req, res) =>{
             data:error
         } )
       }
-}
+}   
 //verificacion de inicio de sesion, permanencia de token
 exports.verifyToken = async(req, res) =>{
     //desencriptar el proceso de token
@@ -154,29 +154,6 @@ exports.createProfile = async (req, res) =>{
         const {nombre, foto, nickName, edad, descripcion, email, socialMedia1,
             socialMedia2, socialMedia3, idUsuario
              } = req.body
-
-    //  UserPerfil.create({
-    //             nombre,
-    //             foto,
-    //             nickName,
-    //             edad,
-    //             descripcion,
-    //             email,
-    //             socialMedia1,
-    //             socialMedia2,
-    //             socialMedia3,
-    //             propietario,
-    //             idUsuario
-    //          })
-    //     .then(dbPerfil =>{
-    //        return Usuario.findByIdAndUpdate(propietario, {$push:{perfil:dbPerfil._id}}) 
-             
-    //     })
-    //     .then(()=>res.redirect('/'))
-    //     .catch(err => {
-    //         console.log(`Hubo un error creando el post en la base de datos: ${err}`);
-    //         next(err);
-    //       });
 
 
         try {
